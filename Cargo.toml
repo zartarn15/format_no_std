@@ -1,4 +1,10 @@
 [package]
+authors = ["Alex <zartarn15@gmail.com>"]
+categories = ["embedded", "no-std"]
+description = "Bare metal formatting"
+keywords = ["no_std", "format", "format_args"]
+license = "MIT OR Apache-2.0"
 name = "format_no_std"
 version = "1.0.0"
+repository = "https://github.com/zartarn15/format_no_std"
 edition = "2018"
