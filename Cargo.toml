@@ -1,0 +1,4 @@
+[package]
+name = "format_no_std"
+version = "1.0.0"
+edition = "2018"
