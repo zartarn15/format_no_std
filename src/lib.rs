@@ -6,7 +6,7 @@
 //!
 //! ``` rust
 //! let mut buf = [0u8; 64];
-//! let s: &str = format_no_std::show(
+//! let s = format_no_std::show(
 //!     &mut buf,
 //!     format_args!("Test String {}: {}", "foo", 42),
 //! ).unwrap();
@@ -69,7 +69,15 @@ pub fn show<'a>(buf: &'a mut [u8], arg: fmt::Arguments) -> Result<&'a str, fmt::
 #[test]
 fn test() {
     let mut buf = [0u8; 64];
-    let s: &str = show(&mut buf, format_args!("Test String {}: {}", "foo", 42)).unwrap();
+    let s = show(&mut buf, format_args!("Test String {}: {}", "foo", 42)).unwrap();
 
     assert_eq!("Test String foo: 42", s);
+}
+
+#[test]
+fn test_to_long() {
+    let mut buf = [0u8; 8];
+    let ret = show(&mut buf, format_args!("Too long string"));
+
+    assert_eq!(Err(fmt::Error), ret);
 }

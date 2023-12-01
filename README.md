@@ -25,7 +25,7 @@ Library usage example
 
 ```rust
 let mut buf = [0u8; 64];
-let s: &str = format_no_std::show(
+let s = format_no_std::show(
     &mut buf,
     format_args!("Test String {}: {}", "foo", 42),
 ).unwrap();
