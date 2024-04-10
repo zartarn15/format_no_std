@@ -1,7 +1,7 @@
-//! Implement write_str to get write_fmt len in macro format!() and
-//! format_args!() for no_std formatting in bare metal environment
+//! Implements `write_str` to get `write_fmt`, which is used in the `format!()` and
+//! `format_args!()` macros. For `no_std` formatting in a bare metal environment.
 //!
-//! This code based on
+//! This code is based on
 //! https://stackoverflow.com/questions/50200268/how-can-i-use-the-format-macro-in-a-no-std-environment
 //!
 //! ``` rust
