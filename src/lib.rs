@@ -1,7 +1,7 @@
-//! Implement write_str to get write_fmt len in macro format!() and
-//! format_args!() for no_std formatting in bare metal environment
+//! Implements `write_str` to get `write_fmt`, which is used in the `format!()` and
+//! `format_args!()` macros. For `no_std` formatting in a bare metal environment.
 //!
-//! This code based on
+//! This code is based on
 //! https://stackoverflow.com/questions/50200268/how-can-i-use-the-format-macro-in-a-no-std-environment
 //!
 //! ``` rust
@@ -20,16 +20,19 @@ use core::cmp::min;
 use core::fmt;
 use core::str::from_utf8_unchecked;
 
+/// A struct representing a writer that appends formatted data to a byte buffer.
 pub struct WriteTo<'a> {
     buf: &'a mut [u8],
     len: usize,
 }
 
 impl<'a> WriteTo<'a> {
+    /// Constructs a new `WriteTo` instance wrapping the provided byte buffer.
     pub fn new(buf: &'a mut [u8]) -> Self {
         WriteTo { buf, len: 0 }
     }
 
+    /// Converts the written portion of the buffer into a string slice, if possible.
     pub fn as_str(self) -> Option<&'a str> {
         if self.len <= self.buf.len() {
             Some(unsafe { from_utf8_unchecked(&self.buf[..self.len]) })
@@ -40,6 +43,7 @@ impl<'a> WriteTo<'a> {
 }
 
 impl<'a> fmt::Write for WriteTo<'a> {
+    /// Writes a string slice into the buffer, updating the length accordingly.
     fn write_str(&mut self, s: &str) -> fmt::Result {
         if self.len > self.buf.len() {
             return Err(fmt::Error);
@@ -60,6 +64,7 @@ impl<'a> fmt::Write for WriteTo<'a> {
     }
 }
 
+/// Formats data using `format_args!` (`arg` argument) and writes it to a byte buffer `buf`.
 pub fn show<'a>(buf: &'a mut [u8], arg: fmt::Arguments) -> Result<&'a str, fmt::Error> {
     let mut w = WriteTo::new(buf);
     fmt::write(&mut w, arg)?;

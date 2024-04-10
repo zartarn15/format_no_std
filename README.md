@@ -1,15 +1,15 @@
 # `format_no_std`
 
-> Implement **write_str** to get **write_fmt** used in macro **format!()** and
-> **format_args!()** for **no_std** formatting bare metal environment
+> Implements `write_str` to get `write_fmt`, which is used in the `format!()` and
+> `format_args!()` macros. For `no_std` formatting in a bare metal environment.
 
 ## License
 
 Licensed under either of
 
 - Apache License, Version 2.0 ([LICENSE-APACHE](LICENSE-APACHE) or
-  http://www.apache.org/licenses/LICENSE-2.0)
-- MIT license ([LICENSE-MIT](LICENSE-MIT) or http://opensource.org/licenses/MIT)
+  https://www.apache.org/licenses/LICENSE-2.0)
+- MIT License ([LICENSE-MIT](LICENSE-MIT) or https://opensource.org/licenses/MIT)
 
 at your option.
 
