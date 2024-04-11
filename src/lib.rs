@@ -18,7 +18,7 @@
 
 use core::cmp::min;
 use core::fmt;
-use core::str::from_utf8_unchecked;
+use core::str::from_utf8;
 
 /// A struct representing a writer that appends formatted data to a byte buffer.
 pub struct WriteTo<'a> {
@@ -35,7 +35,7 @@ impl<'a> WriteTo<'a> {
     /// Converts the written portion of the buffer into a string slice, if possible.
     pub fn as_str(self) -> Option<&'a str> {
         if self.len <= self.buf.len() {
-            Some(unsafe { from_utf8_unchecked(&self.buf[..self.len]) })
+            from_utf8(&self.buf[..self.len]).ok()
         } else {
             None
         }
