@@ -49,6 +49,15 @@ impl<'a> WriteTo<'a> {
             None
         }
     }
+
+    /// Returns true if self has a length of zero bytes, unless there where errors.
+    pub fn is_empty(&self) -> Option<bool> {
+        if self.len <= self.buf.len() {
+            Some(self.len == 0)
+        } else {
+            None
+        }
+    }
 }
 
 impl<'a> fmt::Write for WriteTo<'a> {
@@ -103,7 +112,19 @@ fn test_len() {
     let mut w = WriteTo::new(&mut buf);
     write!(&mut w, "Test String {}: {}", "foo", 42).unwrap();
 
-    assert_eq!(Some(19), w.len());
+    assert_eq!(w.len(), Some(19));
+    assert_eq!(w.is_empty(), Some(false));
+}
+
+#[test]
+fn test_len_empty() {
+    use fmt::Write;
+    let mut buf = [0u8; 64];
+    let mut w = WriteTo::new(&mut buf);
+    write!(&mut w, "").unwrap();
+
+    assert_eq!(w.len(), Some(0));
+    assert_eq!(w.is_empty(), Some(true));
 }
 
 #[test]
@@ -111,7 +132,9 @@ fn test_len_to_long() {
     use fmt::Write;
     let mut buf = [0u8; 8];
     let mut w = WriteTo::new(&mut buf);
-    write!(&mut w, "Tooo long string").ok();
+    let res = write!(&mut w, "Tooo long string");
 
-    assert_eq!(None, w.len());
+    assert_eq!(res, Err(core::fmt::Error));
+    assert_eq!(w.len(), None);
+    assert_eq!(w.is_empty(), None);
 }
