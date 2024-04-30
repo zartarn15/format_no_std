@@ -40,6 +40,15 @@ impl<'a> WriteTo<'a> {
             None
         }
     }
+
+    /// Get the number of bytes written to buffer, unless there where errors.
+    pub fn len(&self) -> Option<usize> {
+        if self.len <= self.buf.len() {
+            Some(self.len)
+        } else {
+            None
+        }
+    }
 }
 
 impl<'a> fmt::Write for WriteTo<'a> {
@@ -85,4 +94,24 @@ fn test_to_long() {
     let ret = show(&mut buf, format_args!("Too long string"));
 
     assert_eq!(Err(fmt::Error), ret);
+}
+
+#[test]
+fn test_len() {
+    use fmt::Write;
+    let mut buf = [0u8; 64];
+    let mut w = WriteTo::new(&mut buf);
+    write!(&mut w, "Test String {}: {}", "foo", 42).unwrap();
+
+    assert_eq!(Some(19), w.len());
+}
+
+#[test]
+fn test_len_to_long() {
+    use fmt::Write;
+    let mut buf = [0u8; 8];
+    let mut w = WriteTo::new(&mut buf);
+    write!(&mut w, "Tooo long string").ok();
+
+    assert_eq!(None, w.len());
 }
