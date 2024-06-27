@@ -42,6 +42,18 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-cargo-index-
 
+      - name: Install Clippy
+        run: rustup component add clippy
+
+      - name: Install Rustfmt
+        run: rustup component add rustfmt
+
+      - name: Check code format
+        run: cargo fmt -- --check
+
+      - name: Run Clippy
+        run: cargo clippy -- -D warnings
+
       - name: Build and test
         run: |
           cargo build --verbose
